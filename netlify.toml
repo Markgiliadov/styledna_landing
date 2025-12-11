@@ -1,0 +1,74 @@
+# Netlify Configuration for StyleDNA Landing Page
+
+[build]
+  publish = "/"
+
+# Redirects for SPA-like behavior and custom 404
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# Security Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevent clickjacking
+    X-Frame-Options = "DENY"
+
+    # Prevent MIME type sniffing
+    X-Content-Type-Options = "nosniff"
+
+    # Referrer Policy
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # XSS Protection
+    X-XSS-Protection = "1; mode=block"
+
+    # Permissions Policy
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+    # Content Security Policy
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io https://www.google-analytics.com; frame-ancestors 'none';"
+
+# Cache static assets
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache HTML pages for shorter duration
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# Form handling (if using Netlify Forms)
+# Uncomment below if you want to use Netlify Forms instead of Formspree
+
+# [[plugins]]
+# package = "@netlify/plugin-forms"
+
+# Environment variables (set in Netlify dashboard)
+# [build.environment]
+#   NODE_ENV = "production"
+
+# Branch deploys
+[context.production]
+  command = ""
+
+[context.deploy-preview]
+  command = ""
+
+[context.branch-deploy]
+  command = ""
